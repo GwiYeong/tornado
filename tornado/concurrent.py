@@ -320,12 +320,12 @@ class Future(object):
 
     def _set_done(self):
         self._done = True
-        for cb in self._callbacks:
-            try:
-                cb(self)
-            except Exception:
-                app_log.exception('Exception in callback %r for %r',
-                                  cb, self)
+        if self._callbacks:
+            for cb in self._callbacks:
+                try:
+                    cb(self)
+                except Exception:
+                    app_log.exception('Exception in callback %r for %r', cb, self)
         self._callbacks = None
 
     # On Python 3.3 or older, objects with a destructor part of a reference
